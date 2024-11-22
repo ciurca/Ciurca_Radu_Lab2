@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Ciurca_Radu_Lab2.Models.Book>
+﻿@model IEnumerable<Ciurca_Radu_Lab2.Models.BookViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,20 +9,29 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by title: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                @* @Html.DisplayNameFor(model => model.Author) *@
             </th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">@Html.DisplayNameFor(model => model.Price)</a>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @* @Html.DisplayNameFor(model => model.Genre) *@
             </th>
             <th></th>
         </tr>
@@ -34,14 +43,13 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author.FirstName)
-                @Html.DisplayFor(modelItem => item.Author.LastName)
+                @* @Html.DisplayFor(modelItem => item.Author.FullName) *@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Genre.Name)
+                @* @Html.DisplayFor(modelItem => item.Genre.Name) *@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
