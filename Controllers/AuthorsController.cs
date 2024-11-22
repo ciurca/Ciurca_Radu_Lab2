@@ -34,6 +34,7 @@ namespace Ciurca_Radu_Lab2.Controllers
             }
 
             var authors = await _context.Authors
+                .Include(a => a.Books)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (authors == null)
             {
