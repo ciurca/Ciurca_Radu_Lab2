@@ -20,10 +20,25 @@ namespace Ciurca_Radu_Lab2.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(
+         string sortOrder,
+         string currentFilter,
+         string searchString,
+         int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
             var books = from b in _context.Book
                         join a in _context.Authors on b.AuthorID equals a.ID
@@ -53,7 +68,9 @@ namespace Ciurca_Radu_Lab2.Controllers
                     books = books.OrderBy(b => b.Title);
                     break;
             }
-            return View(await books.AsNoTracking().ToListAsync());
+            int pageSize = 2;
+            return View(await PaginatedList<BookViewModel>.CreateAsync(books.AsNoTracking(),
+           pageNumber ?? 1, pageSize));
         }
 
         // GET: Books/Details/5

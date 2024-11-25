@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Ciurca_Radu_Lab2.Data;
 using Ciurca_Radu_Lab2.Models;
 
 namespace Ciurca_Radu_Lab2.Controllers

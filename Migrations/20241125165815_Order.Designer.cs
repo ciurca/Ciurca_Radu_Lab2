@@ -4,6 +4,7 @@ using Ciurca_Radu_Lab2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ciurca_Radu_Lab2.Migrations
 {
     [DbContext(typeof(Ciurca_Radu_Lab2Context))]
-    partial class Ciurca_Radu_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20241125165815_Order")]
+    partial class Order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace Ciurca_Radu_Lab2.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -140,52 +143,6 @@ namespace Ciurca_Radu_Lab2.Migrations
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("Ciurca_Radu_Lab2.Models.PublishedBook", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("BookID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PublisherID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BookID");
-
-                    b.HasIndex("PublisherID");
-
-                    b.ToTable("PublishedBooks");
-                });
-
-            modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Publisher", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Adress")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("PublisherName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Publisher");
-                });
-
             modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Book", b =>
                 {
                     b.HasOne("Ciurca_Radu_Lab2.Models.Authors", "Author")
@@ -216,25 +173,6 @@ namespace Ciurca_Radu_Lab2.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Ciurca_Radu_Lab2.Models.PublishedBook", b =>
-                {
-                    b.HasOne("Ciurca_Radu_Lab2.Models.Book", "Book")
-                        .WithMany("PublishedBooks")
-                        .HasForeignKey("BookID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ciurca_Radu_Lab2.Models.Publisher", "Publisher")
-                        .WithMany("PublishedBooks")
-                        .HasForeignKey("PublisherID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Publisher");
-                });
-
             modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Authors", b =>
                 {
                     b.Navigation("Books");
@@ -243,18 +181,11 @@ namespace Ciurca_Radu_Lab2.Migrations
             modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Book", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("PublishedBooks");
                 });
 
             modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Ciurca_Radu_Lab2.Models.Publisher", b =>
-                {
-                    b.Navigation("PublishedBooks");
                 });
 #pragma warning restore 612, 618
         }
