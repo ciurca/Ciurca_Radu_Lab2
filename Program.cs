@@ -1,11 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Ciurca_Radu_Lab2.Data;
 using Ciurca_Radu_Lab2;
 using Ciurca_Radu_Lab2.Hubs;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Ciurca_Radu_Lab2Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Ciurca_Radu_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Ciurca_Radu_Lab2Context' not found.")));
+
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Ciurca_Radu_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Ciurca_Radu_Lab2Context' not found.")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
+
+builder.Services.Configure<IdentityOptions>(options => {
+    options.Password.RequiredLength = 8;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.Lockout.AllowedForNewUsers = true;
+});
 
 builder.Services.AddSignalR();
 
@@ -33,6 +46,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -41,4 +56,5 @@ app.MapControllerRoute(
 
 app.MapHub<ChatHub>("/Chat");
 
+app.MapRazorPages();
 app.Run();
