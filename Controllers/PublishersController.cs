@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Ciurca_Radu_Lab2;
 using Ciurca_Radu_Lab2.Models;
 using Ciurca_Radu_Lab2.Models.LibraryViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ciurca_Radu_Lab2.Controllers
 {
+    [Authorize(Policy = "OnlySales")]
     public class PublishersController : Controller
     {
         private readonly Ciurca_Radu_Lab2Context _context;

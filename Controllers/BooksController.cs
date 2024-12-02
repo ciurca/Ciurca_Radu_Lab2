@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ciurca_Radu_Lab2.Data;
 using Ciurca_Radu_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ciurca_Radu_Lab2.Controllers
 {
+    [Authorize(Roles = "Employee")]
     public class BooksController : Controller
     {
         private readonly Ciurca_Radu_Lab2Context _context;
@@ -20,6 +22,7 @@ namespace Ciurca_Radu_Lab2.Controllers
         }
 
         // GET: Books
+        [AllowAnonymous]
         public async Task<IActionResult> Index(
          string sortOrder,
          string currentFilter,
@@ -74,6 +77,7 @@ namespace Ciurca_Radu_Lab2.Controllers
         }
 
         // GET: Books/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

@@ -22,6 +22,7 @@ namespace Ciurca_Radu_Lab2
 
         public DbSet<Publisher> Publisher { get; set; } = default!;
         public DbSet<PublishedBook> PublishedBooks { get; set; } = default!;
+        public DbSet<Customer> Customers { get; set; } = default!;
 
     }
 }

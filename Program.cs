@@ -11,16 +11,37 @@ builder.Services.AddDbContext<Ciurca_Radu_Lab2Context>(options =>
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Ciurca_Radu_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Ciurca_Radu_Lab2Context' not found.")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequiredLength = 8;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.AllowedForNewUsers = true;
+
+});
+
+builder.Services.AddAuthorization(opts => {
+    opts.AddPolicy("OnlySales", policy => {
+        policy.RequireClaim("Department", "Sales");
+    });
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddRazorPages();
+
+builder.Services.AddAuthorization(opts => {
+    opts.AddPolicy("SalesManager", policy => {
+        policy.RequireRole("Manager");
+        policy.RequireClaim("Department", "Sales");
+    });
+});
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
