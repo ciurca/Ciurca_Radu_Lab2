@@ -76,6 +76,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<ChatHub>("/Chat");
+app.MapHub<NotificationHub>("/Notification");
 
 app.MapRazorPages();
 app.Run();

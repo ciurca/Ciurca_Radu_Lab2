@@ -50,5 +50,10 @@ namespace Ciurca_Radu_Lab2.Controllers
         {
             return View();
         }
+
+        public IActionResult Notification()
+        {
+            return View();
+        }
     }
 }
